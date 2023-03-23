@@ -3,4 +3,12 @@ kind: ManageIQ
 metadata:
   name: manageiq-sample
 spec:
-  applicationDomain: miqproject.apps-crc.testing
+  applicationDomain: miq.apps.nasar-miq.cp.fyre.ibm.com
+  orchestratorImage: docker.io/nasark/manageiq-orchestrator:latest
+  baseWorkerImage: docker.io/nasark/manageiq-base-worker:latest
+  uiWorkerImage: docker.io/nasark/manageiq-ui-worker:latest
+  webserverWorkerImage: docker.io/nasark/manageiq-webserver-worker:latest
+  kafkaImage: docker.io/nasark/kafka:2
+  postgresqlImage: docker.io/manageiq/postgresql:13
+  deployMessagingService: true
+  internalCertificatesSecret: internal-certificates-secret

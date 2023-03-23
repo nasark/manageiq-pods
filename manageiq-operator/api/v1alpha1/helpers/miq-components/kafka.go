@@ -162,8 +162,17 @@ func KafkaService(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*corev1.Ser
 		if len(service.Spec.Ports) == 0 {
 			service.Spec.Ports = append(service.Spec.Ports, corev1.ServicePort{})
 		}
-		service.Spec.Ports[0].Name = "kafka"
-		service.Spec.Ports[0].Port = 9092
+
+		service.Spec.Ports = []corev1.ServicePort{
+			corev1.ServicePort{
+				Name: "kafka",
+				Port: 9092,
+			},
+			corev1.ServicePort{
+				Name: "localhost",
+				Port: 9093,
+			},
+		}
 		service.Spec.Selector = map[string]string{"name": "kafka"}
 		return nil
 	}
@@ -197,7 +206,7 @@ func ZookeeperService(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*corev1
 	return service, f
 }
 
-func KafkaDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*appsv1.Deployment, controllerutil.MutateFn, error) {
+func KafkaDeployment(cr *miqv1alpha1.ManageIQ, client client.Client, scheme *runtime.Scheme) (*appsv1.Deployment, controllerutil.MutateFn, error) {
 	deploymentLabels := map[string]string{
 		"name": "kafka",
 		"app":  cr.Spec.AppName,
@@ -210,6 +219,9 @@ func KafkaDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*appsv1.
 		Ports: []corev1.ContainerPort{
 			corev1.ContainerPort{
 				ContainerPort: 9092,
+			},
+			corev1.ContainerPort{
+				ContainerPort: 9093,
 			},
 		},
 		LivenessProbe: &corev1.Probe{
@@ -246,12 +258,76 @@ func KafkaDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*appsv1.
 				},
 			},
 			corev1.EnvVar{
-				Name:  "KAFKA_ZOOKEEPER_CONNECT",
-				Value: "zookeeper:2181",
+				Name:  "KAFKA_ClIENT_USERS",
+				Value: "user",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CLIENT_PASSWORDS",
+				Value: "password",
 			},
 			corev1.EnvVar{
 				Name:  "ALLOW_PLAINTEXT_LISTENER",
 				Value: "yes",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP",
+				Value: "INTERNAL:SASL_SSL,CONTROLLER:SASL_SSL",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_ENABLE_KRAFT",
+				Value: "yes",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_PROCESS_ROLES",
+				Value: "broker,controller",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_CONTROLLER_LISTENER_NAMES",
+				Value: "CONTROLLER",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_LISTENERS",
+				Value: "INTERNAL://:9092,CONTROLLER://:9093",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_INTER_BROKER_LISTENER_NAME",
+				Value: "INTERNAL",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_ADVERTISED_LISTENERS",
+				Value: "INTERNAL://kafka:9092",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_CONTROLLER_QUORUM_VOTERS",
+				Value: "1@kafka:9093",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_BROKER_ID",
+				Value: "1",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_LISTENER_NAME_INTERNAL_SSL_CLIENT_AUTH",
+				Value: "required",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_LISTENER_NAME_CONTROLLER_SSL_CLIENT_AUTH",
+				Value: "required",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL",
+				Value: "PLAIN",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_SASL_MECHANISM_CONTROLLER_PROTOCOL",
+				Value: "PLAIN",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CFG_SASL_ENABLED_MECHANISMS",
+				Value: "PLAIN",
+			},
+			corev1.EnvVar{
+				Name:  "KAFKA_CERTIFICATE_PASSWORD",
+				Value: "nasar123",
 			},
 		},
 		VolumeMounts: []corev1.VolumeMount{
@@ -278,7 +354,9 @@ func KafkaDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*appsv1.
 					Labels: deploymentLabels,
 					Name:   "kafka",
 				},
-				Spec: corev1.PodSpec{},
+				Spec: corev1.PodSpec{
+					Hostname: "kafka",
+				},
 			},
 		},
 	}
@@ -311,6 +389,8 @@ func KafkaDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*appsv1.
 				},
 			},
 		}
+		addKafkaStores(cr, deployment, client, "/opt/bitnami/kafka/config/certs")
+
 		return nil
 	}
 
@@ -334,8 +414,24 @@ func ZookeeperDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*app
 		},
 		Env: []corev1.EnvVar{
 			corev1.EnvVar{
-				Name:  "ALLOW_ANONYMOUS_LOGIN",
+				Name:  "ZOO_SERVER_USERS",
+				Value: "user",
+			},
+			corev1.EnvVar{
+				Name:  "ZOO_SERVER_PASSWORDS",
+				Value: "password",
+			},
+			corev1.EnvVar{
+				Name:  "ZOO_ENABLE_AUTH",
 				Value: "yes",
+			},
+			corev1.EnvVar{
+				Name:  "ZOO_CLIENT_USER",
+				Value: "user",
+			},
+			corev1.EnvVar{
+				Name:  "ZOO_CLIENT_PASSWORD",
+				Value: "password",
 			},
 		},
 		VolumeMounts: []corev1.VolumeMount{
