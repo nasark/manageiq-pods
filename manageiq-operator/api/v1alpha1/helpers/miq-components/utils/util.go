@@ -1,4 +1,4 @@
-package miqtools
+package utils
 
 import (
 	"context"
