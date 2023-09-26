@@ -1,4 +1,4 @@
-module github.com/ManageIQ/manageiq-pods/manageiq-operator
+module github.com/nasark/manageiq-pods/manageiq-operator
 
 go 1.21
 
