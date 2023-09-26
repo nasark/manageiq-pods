@@ -1,7 +1,7 @@
 package miqtools
 
 import (
-	miqv1alpha1 "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1"
+	miqv1alpha1 "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1"
 	miqutils "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1/helpers/miq-components/utils"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -95,13 +95,13 @@ func NewMemcachedDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme, cl
 		}
 		miqutils.addAnnotations(cr.Spec.AppAnnotations, &deployment.Spec.Template.ObjectMeta)
 		deployment.Spec.Template.Spec.Containers = []corev1.Container{container}
-		deployment.Spec.Template.Spec.Containers[0].SecurityContext = DefaultSecurityContext()
+		deployment.Spec.Template.Spec.Containers[0].SecurityContext = miqutils.DefaultSecurityContext()
 		deployment.Spec.Template.Spec.ServiceAccountName = defaultServiceAccountName(cr.Spec.AppName)
 
-		addInternalCertificate(cr, deployment, client, "memcached", "/root")
+		miqutils.addInternalCertificate(cr, deployment, client, "memcached", "/root")
 
 		if secret := miqutils.InternalCertificatesSecret(cr, client); secret.Data["memcached_crt"] != nil && secret.Data["memcached_key"] != nil {
-			deployment.Spec.Template.Spec.Containers[0].Env = addOrUpdateEnvVar(deployment.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "MEMCACHED_EXTRA_PARAMETERS", Value: "-Z -o ssl_chain_cert=/root/server.crt -o ssl_key=/root/server.key -p 11211"})
+			deployment.Spec.Template.Spec.Containers[0].Env = miqutils.addOrUpdateEnvVar(deployment.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "MEMCACHED_EXTRA_PARAMETERS", Value: "-Z -o ssl_chain_cert=/root/server.crt -o ssl_key=/root/server.key -p 11211"})
 		}
 
 		return nil

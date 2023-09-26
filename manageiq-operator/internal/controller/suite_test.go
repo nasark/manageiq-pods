@@ -29,7 +29,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	manageiqorgv1alpha1 "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1"
+	manageiqorgv1alpha1 "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1"
 	//+kubebuilder:scaffold:imports
 )
 

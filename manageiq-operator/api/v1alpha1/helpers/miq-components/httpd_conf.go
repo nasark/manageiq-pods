@@ -2,7 +2,7 @@ package miqtools
 
 import (
 	"fmt"
-	miqv1alpha1 "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1"
+	miqv1alpha1 "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1"
 )
 
 // auth-configuration.conf
@@ -10,7 +10,7 @@ func httpdAuthConfigurationConf() string {
 	return `
 # External Authentication Configuration File
 #
-# For details on usage please see https://github.com/ManageIQ/manageiq-pods/blob/master/README.md#configuring-external-authentication
+# For details on usage please see https://github.com/nasark/manageiq-pods/blob/master/README.md#configuring-external-authentication
 `
 }
 
