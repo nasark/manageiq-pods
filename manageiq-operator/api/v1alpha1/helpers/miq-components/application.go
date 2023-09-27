@@ -23,8 +23,8 @@ func ApplicationUiHttpdConfigMap(cr *miqv1alpha1.ManageIQ, scheme *runtime.Schem
 		if err := controllerutil.SetControllerReference(cr, configMap, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &configMap.ObjectMeta)
-		miqutils.addBackupLabel(cr.Spec.BackupLabelName, &configMap.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &configMap.ObjectMeta)
+		miqutils.AddBackupLabel(cr.Spec.BackupLabelName, &configMap.ObjectMeta)
 
 		protocol := "http"
 
@@ -54,8 +54,8 @@ func ApplicationApiHttpdConfigMap(cr *miqv1alpha1.ManageIQ, scheme *runtime.Sche
 		if err := controllerutil.SetControllerReference(cr, configMap, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &configMap.ObjectMeta)
-		miqutils.addBackupLabel(cr.Spec.BackupLabelName, &configMap.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &configMap.ObjectMeta)
+		miqutils.AddBackupLabel(cr.Spec.BackupLabelName, &configMap.ObjectMeta)
 
 		protocol := "http"
 
@@ -85,8 +85,8 @@ func ApplicationRemoteConsoleHttpdConfigMap(cr *miqv1alpha1.ManageIQ, scheme *ru
 		if err := controllerutil.SetControllerReference(cr, configMap, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &configMap.ObjectMeta)
-		miqutils.addBackupLabel(cr.Spec.BackupLabelName, &configMap.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &configMap.ObjectMeta)
+		miqutils.AddBackupLabel(cr.Spec.BackupLabelName, &configMap.ObjectMeta)
 
 		protocol := "ws"
 

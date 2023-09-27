@@ -29,8 +29,8 @@ func ManageKafkaSecret(cr *miqv1alpha1.ManageIQ, client client.Client, scheme *r
 			return err
 		}
 
-		miqutils.addAppLabel(cr.Spec.AppName, &secret.ObjectMeta)
-		miqutils.addBackupLabel(cr.Spec.BackupLabelName, &secret.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &secret.ObjectMeta)
+		miqutils.AddBackupLabel(cr.Spec.BackupLabelName, &secret.ObjectMeta)
 
 		return nil
 	}
@@ -53,8 +53,8 @@ func defaultKafkaSecret(cr *miqv1alpha1.ManageIQ) *corev1.Secret {
 		StringData: secretData,
 	}
 
-	miqutils.addAppLabel(cr.Spec.AppName, &secret.ObjectMeta)
-	miqutils.addBackupLabel(cr.Spec.BackupLabelName, &secret.ObjectMeta)
+	miqutils.AddAppLabel(cr.Spec.AppName, &secret.ObjectMeta)
+	miqutils.AddBackupLabel(cr.Spec.BackupLabelName, &secret.ObjectMeta)
 
 	return secret
 }
@@ -93,8 +93,8 @@ func KafkaPVC(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*corev1.Persist
 			return err
 		}
 
-		miqutils.addAppLabel(cr.Spec.AppName, &pvc.ObjectMeta)
-		miqutils.addBackupLabel(cr.Spec.BackupLabelName, &pvc.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &pvc.ObjectMeta)
+		miqutils.AddBackupLabel(cr.Spec.BackupLabelName, &pvc.ObjectMeta)
 		pvc.Spec.AccessModes = accessModes
 		pvc.Spec.Resources = resources
 
@@ -132,8 +132,8 @@ func ZookeeperPVC(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*corev1.Per
 			return err
 		}
 
-		miqutils.addAppLabel(cr.Spec.AppName, &pvc.ObjectMeta)
-		miqutils.addBackupLabel(cr.Spec.BackupLabelName, &pvc.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &pvc.ObjectMeta)
+		miqutils.AddBackupLabel(cr.Spec.BackupLabelName, &pvc.ObjectMeta)
 		pvc.Spec.AccessModes = accessModes
 		pvc.Spec.Resources = resources
 
@@ -159,7 +159,7 @@ func KafkaService(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*corev1.Ser
 			return err
 		}
 
-		miqutils.addAppLabel(cr.Spec.AppName, &service.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &service.ObjectMeta)
 		if len(service.Spec.Ports) == 0 {
 			service.Spec.Ports = append(service.Spec.Ports, corev1.ServicePort{})
 		}
@@ -185,7 +185,7 @@ func ZookeeperService(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*corev1
 			return err
 		}
 
-		miqutils.addAppLabel(cr.Spec.AppName, &service.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &service.ObjectMeta)
 		if len(service.Spec.Ports) == 0 {
 			service.Spec.Ports = append(service.Spec.Ports, corev1.ServicePort{})
 		}
@@ -264,7 +264,7 @@ func KafkaDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*appsv1.
 		},
 	}
 
-	err := miqutils.addResourceReqs(cr.Spec.KafkaMemoryLimit, cr.Spec.KafkaMemoryRequest, cr.Spec.KafkaCpuLimit, cr.Spec.KafkaCpuRequest, &container)
+	err := miqutils.AddResourceReqs(cr.Spec.KafkaMemoryLimit, cr.Spec.KafkaMemoryRequest, cr.Spec.KafkaCpuLimit, cr.Spec.KafkaCpuRequest, &container)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -292,10 +292,10 @@ func KafkaDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*appsv1.
 		if err := controllerutil.SetControllerReference(cr, deployment, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &deployment.ObjectMeta)
-		miqutils.addBackupAnnotation("kafka-data", &deployment.Spec.Template.ObjectMeta)
-		miqutils.addBackupLabel(cr.Spec.BackupLabelName, &deployment.ObjectMeta)
-		miqutils.addBackupLabel(cr.Spec.BackupLabelName, &deployment.Spec.Template.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &deployment.ObjectMeta)
+		miqutils.AddBackupAnnotation("kafka-data", &deployment.Spec.Template.ObjectMeta)
+		miqutils.AddBackupLabel(cr.Spec.BackupLabelName, &deployment.ObjectMeta)
+		miqutils.AddBackupLabel(cr.Spec.BackupLabelName, &deployment.Spec.Template.ObjectMeta)
 		var repNum int32 = 1
 		deployment.Spec.Replicas = &repNum
 		deployment.Spec.Strategy = appsv1.DeploymentStrategy{
@@ -348,7 +348,7 @@ func ZookeeperDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*app
 		},
 	}
 
-	err := miqutils.addResourceReqs(cr.Spec.ZookeeperMemoryLimit, cr.Spec.ZookeeperMemoryRequest, cr.Spec.ZookeeperCpuLimit, cr.Spec.ZookeeperCpuRequest, &container)
+	err := miqutils.AddResourceReqs(cr.Spec.ZookeeperMemoryLimit, cr.Spec.ZookeeperMemoryRequest, cr.Spec.ZookeeperCpuLimit, cr.Spec.ZookeeperCpuRequest, &container)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -376,16 +376,16 @@ func ZookeeperDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) (*app
 		if err := controllerutil.SetControllerReference(cr, deployment, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &deployment.ObjectMeta)
-		miqutils.addBackupAnnotation("zookeeper-data", &deployment.Spec.Template.ObjectMeta)
-		miqutils.addBackupLabel(cr.Spec.BackupLabelName, &deployment.ObjectMeta)
-		miqutils.addBackupLabel(cr.Spec.BackupLabelName, &deployment.Spec.Template.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &deployment.ObjectMeta)
+		miqutils.AddBackupAnnotation("zookeeper-data", &deployment.Spec.Template.ObjectMeta)
+		miqutils.AddBackupLabel(cr.Spec.BackupLabelName, &deployment.ObjectMeta)
+		miqutils.AddBackupLabel(cr.Spec.BackupLabelName, &deployment.Spec.Template.ObjectMeta)
 		var repNum int32 = 1
 		deployment.Spec.Replicas = &repNum
 		deployment.Spec.Strategy = appsv1.DeploymentStrategy{
 			Type: "Recreate",
 		}
-		miqutils.addAnnotations(cr.Spec.AppAnnotations, &deployment.Spec.Template.ObjectMeta)
+		miqutils.AddAnnotations(cr.Spec.AppAnnotations, &deployment.Spec.Template.ObjectMeta)
 		deployment.Spec.Template.Spec.Containers = []corev1.Container{container}
 		deployment.Spec.Template.Spec.Containers[0].SecurityContext = miqutils.DefaultSecurityContext()
 		deployment.Spec.Template.Spec.ServiceAccountName = defaultServiceAccountName(cr.Spec.AppName)

@@ -380,7 +380,7 @@ func ManageCR(cr *miqv1alpha1.ManageIQ, c *client.Client) (*miqv1alpha1.ManageIQ
 		cr.Spec.ZookeeperImage = zookeeperImage(cr)
 		cr.Spec.ZookeeperVolumeCapacity = zookeeperVolumeCapacity(cr)
 
-		miqutils.addBackupLabel(backupLabelName(cr), &cr.ObjectMeta)
+		miqutils.AddBackupLabel(backupLabelName(cr), &cr.ObjectMeta)
 
 		return nil
 	}

@@ -162,37 +162,37 @@ func addMessagingEnv(cr *miqv1alpha1.ManageIQ, c *corev1.Container) {
 }
 
 func addPostgresConfig(cr *miqv1alpha1.ManageIQ, d *appsv1.Deployment, client client.Client) {
-	d.Spec.Template.Spec.Containers[0].Env = miqutils.addOrUpdateEnvVar(d.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "DATABASE_REGION", Value: cr.Spec.DatabaseRegion})
+	d.Spec.Template.Spec.Containers[0].Env = miqutils.AddOrUpdateEnvVar(d.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "DATABASE_REGION", Value: cr.Spec.DatabaseRegion})
 }
 
 func updateOrchestratorEnv(cr *miqv1alpha1.ManageIQ, c *corev1.Container) {
-	c.Env = addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "ADMIN_GROUP", Value: cr.Spec.InitialAdminGroupName})
-	c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "APP_NAME", Value: cr.Spec.AppName})
-	c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "APPLICATION_DOMAIN", Value: cr.Spec.ApplicationDomain})
-	c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "AUTH_SSO", Value: strconv.FormatBool(*cr.Spec.EnableSSO)})
-	c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "AUTH_TYPE", Value: cr.Spec.HttpdAuthenticationType})
-	c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "GUID", Value: cr.Spec.ServerGuid})
-	c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "LOCAL_LOGIN_ENABLED", Value: strconv.FormatBool(*cr.Spec.EnableApplicationLocalLogin)})
-	c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "MEMCACHED_SERVER", Value: "memcached:11211"})
-	c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "WORKER_RESOURCES", Value: strconv.FormatBool(*cr.Spec.EnforceWorkerResourceConstraints)})
-	c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "WORKER_SERVICE_ACCOUNT", Value: defaultServiceAccountName(cr.Spec.AppName)})
+	c.Env = AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "ADMIN_GROUP", Value: cr.Spec.InitialAdminGroupName})
+	c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "APP_NAME", Value: cr.Spec.AppName})
+	c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "APPLICATION_DOMAIN", Value: cr.Spec.ApplicationDomain})
+	c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "AUTH_SSO", Value: strconv.FormatBool(*cr.Spec.EnableSSO)})
+	c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "AUTH_TYPE", Value: cr.Spec.HttpdAuthenticationType})
+	c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "GUID", Value: cr.Spec.ServerGuid})
+	c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "LOCAL_LOGIN_ENABLED", Value: strconv.FormatBool(*cr.Spec.EnableApplicationLocalLogin)})
+	c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "MEMCACHED_SERVER", Value: "memcached:11211"})
+	c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "WORKER_RESOURCES", Value: strconv.FormatBool(*cr.Spec.EnforceWorkerResourceConstraints)})
+	c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "WORKER_SERVICE_ACCOUNT", Value: defaultServiceAccountName(cr.Spec.AppName)})
 
 	// If any of the images were not provided, add the orchestrator namespace and tag
 	if cr.Spec.BaseWorkerImage == "" || cr.Spec.WebserverWorkerImage == "" || cr.Spec.UIWorkerImage == "" {
 		string1 := strings.Split(cr.Spec.OrchestratorImage, ":")
 		string2 := strings.Split(string1[0], "/")
-		c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "CONTAINER_IMAGE_NAMESPACE", Value: string2[0]})
-		c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "CONTAINER_IMAGE_TAG", Value: string1[1]})
+		c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "CONTAINER_IMAGE_NAMESPACE", Value: string2[0]})
+		c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "CONTAINER_IMAGE_TAG", Value: string1[1]})
 	}
 
 	if cr.Spec.BaseWorkerImage != "" {
-		c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "BASE_WORKER_IMAGE", Value: cr.Spec.BaseWorkerImage})
+		c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "BASE_WORKER_IMAGE", Value: cr.Spec.BaseWorkerImage})
 	}
 	if cr.Spec.WebserverWorkerImage != "" {
-		c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "WEBSERVER_WORKER_IMAGE", Value: cr.Spec.WebserverWorkerImage})
+		c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "WEBSERVER_WORKER_IMAGE", Value: cr.Spec.WebserverWorkerImage})
 	}
 	if cr.Spec.UIWorkerImage != "" {
-		c.Env = miqutils.addOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "UI_WORKER_IMAGE", Value: cr.Spec.UIWorkerImage})
+		c.Env = miqutils.AddOrUpdateEnvVar(c.Env, corev1.EnvVar{Name: "UI_WORKER_IMAGE", Value: cr.Spec.UIWorkerImage})
 	}
 }
 
@@ -246,7 +246,7 @@ func OrchestratorDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme, cl
 	}
 
 	addMessagingEnv(cr, &container)
-	err = miqutils.addResourceReqs(cr.Spec.OrchestratorMemoryLimit, cr.Spec.OrchestratorMemoryRequest, cr.Spec.OrchestratorCpuLimit, cr.Spec.OrchestratorCpuRequest, &container)
+	err = miqutils.AddResourceReqs(cr.Spec.OrchestratorMemoryLimit, cr.Spec.OrchestratorMemoryRequest, cr.Spec.OrchestratorCpuLimit, cr.Spec.OrchestratorCpuRequest, &container)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -276,13 +276,13 @@ func OrchestratorDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme, cl
 		if err := controllerutil.SetControllerReference(cr, deployment, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &deployment.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &deployment.ObjectMeta)
 		var repNum int32 = 1
 		deployment.Spec.Replicas = &repNum
 		deployment.Spec.Strategy = appsv1.DeploymentStrategy{
 			Type: "Recreate",
 		}
-		miqutils.addAnnotations(cr.Spec.AppAnnotations, &deployment.Spec.Template.ObjectMeta)
+		miqutils.AddAnnotations(cr.Spec.AppAnnotations, &deployment.Spec.Template.ObjectMeta)
 		var termSecs int64 = 90
 		deployment.Spec.Template.Spec.ServiceAccountName = cr.Spec.AppName + "-orchestrator"
 		deployment.Spec.Template.Spec.TerminationGracePeriodSeconds = &termSecs
@@ -296,23 +296,23 @@ func OrchestratorDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme, cl
 
 		certSecret := miqutils.InternalCertificatesSecret(cr, client)
 		if certSecret.Data["api_crt"] != nil && certSecret.Data["api_key"] != nil {
-			deployment.Spec.Template.Spec.Containers[0].Env = miqutils.addOrUpdateEnvVar(deployment.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "API_SSL_SECRET_NAME", Value: cr.Spec.InternalCertificatesSecret})
+			deployment.Spec.Template.Spec.Containers[0].Env = miqutils.AddOrUpdateEnvVar(deployment.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "API_SSL_SECRET_NAME", Value: cr.Spec.InternalCertificatesSecret})
 		}
 		if certSecret.Data["remote_console_crt"] != nil && certSecret.Data["remote_console_key"] != nil {
-			deployment.Spec.Template.Spec.Containers[0].Env = miqutils.addOrUpdateEnvVar(deployment.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "REMOTE_CONSOLE_SSL_SECRET_NAME", Value: cr.Spec.InternalCertificatesSecret})
+			deployment.Spec.Template.Spec.Containers[0].Env = miqutils.AddOrUpdateEnvVar(deployment.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "REMOTE_CONSOLE_SSL_SECRET_NAME", Value: cr.Spec.InternalCertificatesSecret})
 		}
 		if certSecret.Data["ui_crt"] != nil && certSecret.Data["ui_key"] != nil {
-			deployment.Spec.Template.Spec.Containers[0].Env = miqutils.addOrUpdateEnvVar(deployment.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "UI_SSL_SECRET_NAME", Value: cr.Spec.InternalCertificatesSecret})
+			deployment.Spec.Template.Spec.Containers[0].Env = miqutils.AddOrUpdateEnvVar(deployment.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "UI_SSL_SECRET_NAME", Value: cr.Spec.InternalCertificatesSecret})
 		}
 
 		volumeMount := corev1.VolumeMount{Name: "encryption-key", MountPath: "/run/secrets/manageiq/application", ReadOnly: true}
-		deployment.Spec.Template.Spec.Containers[0].VolumeMounts = miqutils.addOrUpdateVolumeMount(deployment.Spec.Template.Spec.Containers[0].VolumeMounts, volumeMount)
+		deployment.Spec.Template.Spec.Containers[0].VolumeMounts = miqutils.AddOrUpdateVolumeMount(deployment.Spec.Template.Spec.Containers[0].VolumeMounts, volumeMount)
 
 		secretVolumeSource := corev1.SecretVolumeSource{SecretName: "app-secrets", Items: []corev1.KeyToPath{corev1.KeyToPath{Key: "encryption-key", Path: "encryption_key"}}}
-		deployment.Spec.Template.Spec.Volumes = miqutils.addOrUpdateVolume(deployment.Spec.Template.Spec.Volumes, corev1.Volume{Name: "encryption-key", VolumeSource: corev1.VolumeSource{Secret: &secretVolumeSource}})
+		deployment.Spec.Template.Spec.Volumes = miqutils.AddOrUpdateVolume(deployment.Spec.Template.Spec.Volumes, corev1.Volume{Name: "encryption-key", VolumeSource: corev1.VolumeSource{Secret: &secretVolumeSource}})
 
 		databaseVolumeMount := corev1.VolumeMount{Name: "database-secret", MountPath: "/run/secrets/postgresql", ReadOnly: true}
-		deployment.Spec.Template.Spec.Containers[0].VolumeMounts = miqutils.addOrUpdateVolumeMount(deployment.Spec.Template.Spec.Containers[0].VolumeMounts, databaseVolumeMount)
+		deployment.Spec.Template.Spec.Containers[0].VolumeMounts = miqutils.AddOrUpdateVolumeMount(deployment.Spec.Template.Spec.Containers[0].VolumeMounts, databaseVolumeMount)
 
 		databaseSecretVolumeSource := corev1.SecretVolumeSource{SecretName: cr.Spec.DatabaseSecret, Items: []corev1.KeyToPath{
 			corev1.KeyToPath{Key: "dbname", Path: "POSTGRESQL_DATABASE"},
@@ -321,7 +321,7 @@ func OrchestratorDeployment(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme, cl
 			corev1.KeyToPath{Key: "port", Path: "POSTGRESQL_PORT"},
 			corev1.KeyToPath{Key: "username", Path: "POSTGRESQL_USER"},
 		}}
-		deployment.Spec.Template.Spec.Volumes = miqutils.addOrUpdateVolume(deployment.Spec.Template.Spec.Volumes, corev1.Volume{Name: "database-secret", VolumeSource: corev1.VolumeSource{Secret: &databaseSecretVolumeSource}})
+		deployment.Spec.Template.Spec.Volumes = miqutils.AddOrUpdateVolume(deployment.Spec.Template.Spec.Volumes, corev1.Volume{Name: "database-secret", VolumeSource: corev1.VolumeSource{Secret: &databaseSecretVolumeSource}})
 
 		return nil
 	}
@@ -346,16 +346,16 @@ func addInternalRootCertificate(cr *miqv1alpha1.ManageIQ, d *appsv1.Deployment, 
 	secret := miqutils.InternalCertificatesSecret(cr, client)
 	if secret.Data["root_crt"] != nil {
 		volumeMount := corev1.VolumeMount{Name: "internal-root-certificate", MountPath: "/etc/pki/ca-trust/source/anchors", ReadOnly: true}
-		d.Spec.Template.Spec.Containers[0].VolumeMounts = miqutils.addOrUpdateVolumeMount(d.Spec.Template.Spec.Containers[0].VolumeMounts, volumeMount)
+		d.Spec.Template.Spec.Containers[0].VolumeMounts = miqutils.AddOrUpdateVolumeMount(d.Spec.Template.Spec.Containers[0].VolumeMounts, volumeMount)
 
 		secretVolumeSource := corev1.SecretVolumeSource{SecretName: secret.Name, Items: []corev1.KeyToPath{corev1.KeyToPath{Key: "root_crt", Path: "root.crt"}}}
-		d.Spec.Template.Spec.Volumes = miqutils.addOrUpdateVolume(d.Spec.Template.Spec.Volumes, corev1.Volume{Name: "internal-root-certificate", VolumeSource: corev1.VolumeSource{Secret: &secretVolumeSource}})
+		d.Spec.Template.Spec.Volumes = miqutils.AddOrUpdateVolume(d.Spec.Template.Spec.Volumes, corev1.Volume{Name: "internal-root-certificate", VolumeSource: corev1.VolumeSource{Secret: &secretVolumeSource}})
 
-		d.Spec.Template.Spec.Containers[0].Env = miqutils.addOrUpdateEnvVar(d.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "SSL_SECRET_NAME", Value: cr.Spec.InternalCertificatesSecret})
+		d.Spec.Template.Spec.Containers[0].Env = miqutils.AddOrUpdateEnvVar(d.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "SSL_SECRET_NAME", Value: cr.Spec.InternalCertificatesSecret})
 
 		if secret.Data["memcached_crt"] != nil && secret.Data["memcached_key"] != nil {
-			d.Spec.Template.Spec.Containers[0].Env = miqutils.addOrUpdateEnvVar(d.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "MEMCACHED_ENABLE_SSL", Value: "true"})
-			d.Spec.Template.Spec.Containers[0].Env = miqutils.addOrUpdateEnvVar(d.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "MEMCACHED_SSL_CA", Value: "/etc/pki/ca-trust/source/anchors/root.crt"})
+			d.Spec.Template.Spec.Containers[0].Env = miqutils.AddOrUpdateEnvVar(d.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "MEMCACHED_ENABLE_SSL", Value: "true"})
+			d.Spec.Template.Spec.Containers[0].Env = miqutils.AddOrUpdateEnvVar(d.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "MEMCACHED_SSL_CA", Value: "/etc/pki/ca-trust/source/anchors/root.crt"})
 		}
 	}
 }

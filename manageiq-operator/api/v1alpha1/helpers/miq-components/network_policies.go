@@ -19,7 +19,7 @@ func NetworkPolicyDefaultDeny(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme) 
 		if err := controllerutil.SetControllerReference(cr, networkPolicy, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
 		setIngressPolicyType(networkPolicy)
 
 		networkPolicy.Spec.PodSelector.MatchLabels = map[string]string{"app": cr.Spec.AppName}
@@ -37,7 +37,7 @@ func NetworkPolicyAllowInboundHttpd(cr *miqv1alpha1.ManageIQ, scheme *runtime.Sc
 		if err := controllerutil.SetControllerReference(cr, networkPolicy, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
 		setIngressPolicyType(networkPolicy)
 
 		networkPolicy.Spec.PodSelector.MatchLabels = map[string]string{"name": "httpd"}
@@ -65,7 +65,7 @@ func NetworkPolicyAllowHttpdApi(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme
 		if err := controllerutil.SetControllerReference(cr, networkPolicy, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
 		setIngressPolicyType(networkPolicy)
 
 		networkPolicy.Spec.PodSelector.MatchLabels = map[string]string{"service": "web-service"}
@@ -93,7 +93,7 @@ func NetworkPolicyAllowHttpdUi(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme)
 		if err := controllerutil.SetControllerReference(cr, networkPolicy, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
 		setIngressPolicyType(networkPolicy)
 
 		networkPolicy.Spec.PodSelector.MatchLabels = map[string]string{"service": "ui"}
@@ -121,7 +121,7 @@ func NetworkPolicyAllowHttpdRemoteConsole(cr *miqv1alpha1.ManageIQ, scheme *runt
 		if err := controllerutil.SetControllerReference(cr, networkPolicy, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
 		setIngressPolicyType(networkPolicy)
 
 		networkPolicy.Spec.PodSelector.MatchLabels = map[string]string{"service": "remote-console"}
@@ -149,7 +149,7 @@ func NetworkPolicyAllowMemcached(cr *miqv1alpha1.ManageIQ, scheme *runtime.Schem
 		if err := controllerutil.SetControllerReference(cr, networkPolicy, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
 		setIngressPolicyType(networkPolicy)
 
 		networkPolicy.Spec.PodSelector.MatchLabels = map[string]string{"name": "memcached"}
@@ -187,7 +187,7 @@ func NetworkPolicyAllowPostgres(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme
 		if err := controllerutil.SetControllerReference(cr, networkPolicy, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
 		setIngressPolicyType(networkPolicy)
 
 		networkPolicy.Spec.PodSelector.MatchLabels = map[string]string{"name": "postgresql"}
@@ -225,7 +225,7 @@ func NetworkPolicyAllowKafka(cr *miqv1alpha1.ManageIQ, scheme *runtime.Scheme, c
 		if err := controllerutil.SetControllerReference(cr, networkPolicy, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
 		setIngressPolicyType(networkPolicy)
 
 		networkPolicy.Spec.PodSelector.MatchLabels = map[string]string{"name": "kafka"}
@@ -263,7 +263,7 @@ func NetworkPolicyAllowZookeeper(cr *miqv1alpha1.ManageIQ, scheme *runtime.Schem
 		if err := controllerutil.SetControllerReference(cr, networkPolicy, scheme); err != nil {
 			return err
 		}
-		miqutils.addAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &networkPolicy.ObjectMeta)
 		setIngressPolicyType(networkPolicy)
 
 		networkPolicy.Spec.PodSelector.MatchLabels = map[string]string{"name": "zookeeper"}

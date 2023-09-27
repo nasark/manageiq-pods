@@ -28,8 +28,8 @@ func ManageAppSecret(cr *miqv1alpha1.ManageIQ, client client.Client, scheme *run
 			return err
 		}
 
-		miqutils.addAppLabel(cr.Spec.AppName, &secret.ObjectMeta)
-		miqutils.addBackupLabel(cr.Spec.BackupLabelName, &secret.ObjectMeta)
+		miqutils.AddAppLabel(cr.Spec.AppName, &secret.ObjectMeta)
+		miqutils.AddBackupLabel(cr.Spec.BackupLabelName, &secret.ObjectMeta)
 
 		return nil
 	}
