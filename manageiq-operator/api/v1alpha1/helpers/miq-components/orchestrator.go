@@ -3,8 +3,8 @@ package miqtools
 import (
 	"context"
 
-	miqv1alpha1 "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1"
-	miqutilsv1alpha1 "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1/miqutils"
+	miqv1alpha1 "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1"
+	miqutilsv1alpha1 "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1/miqutils"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -353,8 +353,14 @@ func addInternalRootCertificate(cr *miqv1alpha1.ManageIQ, d *appsv1.Deployment, 
 		volumeMount := corev1.VolumeMount{Name: "internal-root-certificate", MountPath: "/etc/pki/ca-trust/source/anchors", ReadOnly: true}
 		d.Spec.Template.Spec.Containers[0].VolumeMounts = addOrUpdateVolumeMount(d.Spec.Template.Spec.Containers[0].VolumeMounts, volumeMount)
 
-		secretVolumeSource := corev1.SecretVolumeSource{SecretName: secret.Name, Items: []corev1.KeyToPath{corev1.KeyToPath{Key: "root_crt", Path: "root.crt"}}}
-		d.Spec.Template.Spec.Volumes = addOrUpdateVolume(d.Spec.Template.Spec.Volumes, corev1.Volume{Name: "internal-root-certificate", VolumeSource: corev1.VolumeSource{Secret: &secretVolumeSource}})
+		volumeProjection := &corev1.VolumeProjection{
+			Secret: &corev1.SecretProjection{
+				LocalObjectReference: corev1.LocalObjectReference{Name: cr.Spec.InternalCertificatesSecret},
+				Items:                []corev1.KeyToPath{corev1.KeyToPath{Key: "root_crt", Path: "root.crt"}},
+			},
+		}
+		projectedSecretVolumeSource := addOrUpdateProjectedSecretVolumeSource("internal-root-certificate", d.Spec.Template.Spec.Volumes, volumeProjection)
+		d.Spec.Template.Spec.Volumes = addOrUpdateVolume(d.Spec.Template.Spec.Volumes, corev1.Volume{Name: "internal-root-certificate", VolumeSource: corev1.VolumeSource{Projected: &projectedSecretVolumeSource}})
 
 		d.Spec.Template.Spec.Containers[0].Env = addOrUpdateEnvVar(d.Spec.Template.Spec.Containers[0].Env, corev1.EnvVar{Name: "SSL_SECRET_NAME", Value: cr.Spec.InternalCertificatesSecret})
 

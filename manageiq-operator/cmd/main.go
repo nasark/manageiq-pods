@@ -36,8 +36,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	ctrlmetrics "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
-	manageiqv1alpha1 "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1"
-	"github.com/ManageIQ/manageiq-pods/manageiq-operator/internal/controller"
+	manageiqv1alpha1 "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1"
+	"github.com/nasark/manageiq-pods/manageiq-operator/internal/controller"
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	//+kubebuilder:scaffold:imports

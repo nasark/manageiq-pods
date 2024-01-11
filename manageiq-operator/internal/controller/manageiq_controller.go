@@ -33,11 +33,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	miqv1alpha1 "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1"
-	cr_migration "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1/helpers/cr_migration"
-	miqtool "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1/helpers/miq-components"
-	miqkafka "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1/helpers/miq-components/kafka"
-	miqutilsv1alpha1 "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1/miqutils"
+	miqv1alpha1 "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1"
+	cr_migration "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1/helpers/cr_migration"
+	miqtool "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1/helpers/miq-components"
+	miqkafka "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1/helpers/miq-components/kafka"
+	miqutilsv1alpha1 "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1/miqutils"
 	apimeta "k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

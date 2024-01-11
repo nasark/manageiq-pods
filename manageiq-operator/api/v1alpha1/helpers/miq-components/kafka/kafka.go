@@ -3,9 +3,9 @@ package miqkafka
 import (
 	"bytes"
 	"context"
-	miqv1alpha1 "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1"
-	miqtool "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1/helpers/miq-components"
-	miqutilsv1alpha1 "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1/miqutils"
+	miqv1alpha1 "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1"
+	miqtool "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1/helpers/miq-components"
+	miqutilsv1alpha1 "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1/miqutils"
 	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	corev1 "k8s.io/api/core/v1"

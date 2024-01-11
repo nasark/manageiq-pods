@@ -6,9 +6,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	miqv1alpha1 "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1"
-	tlstools "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1/helpers/tlstools"
-	miqutilsv1alpha1 "github.com/ManageIQ/manageiq-pods/manageiq-operator/api/v1alpha1/miqutils"
+	miqv1alpha1 "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1"
+	tlstools "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1/helpers/tlstools"
+	miqutilsv1alpha1 "github.com/nasark/manageiq-pods/manageiq-operator/api/v1alpha1/miqutils"
 	routev1 "github.com/openshift/api/route/v1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
